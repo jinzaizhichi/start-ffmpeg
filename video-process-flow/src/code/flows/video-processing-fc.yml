@@ -3,7 +3,7 @@ type: flow
 steps:
   - type: task
     name: Split
-    resourceArn: 'acs:fc:::services/{{serviceRoleArn}}/functions/split'
+    resourceArn: 'acs:fc:::services/{{serviceName}}/functions/split'
     retry:
       - errors:
           - FC.ResourceThrottled
@@ -30,7 +30,7 @@ steps:
         steps:
           - type: task
             name: Transcode
-            resourceArn: 'acs:fc:::services/{{serviceRoleArn}}/functions/transcode'
+            resourceArn: 'acs:fc:::services/{{serviceName}}/functions/transcode'
             retry:
               - errors:
                   - FC.ResourceThrottled
@@ -43,7 +43,7 @@ steps:
                 multiplier: 2
       - type: task
         name: Merge
-        resourceArn: 'acs:fc:::services/{{serviceRoleArn}}/functions/merge'
+        resourceArn: 'acs:fc:::services/{{serviceName}}/functions/merge'
         retry:
           - errors:
               - FC.ResourceThrottled
@@ -59,7 +59,7 @@ steps:
         source: $input.video_proc_dir
   - type: task
     name: after-process
-    resourceArn: 'acs:fc:::services/{{serviceRoleArn}}/functions/after-process'
+    resourceArn: 'acs:fc:::services/{{serviceName}}/functions/after-process'
     retry:
       - errors:
           - FC.ResourceThrottled

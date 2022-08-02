@@ -54,6 +54,12 @@ Parameters:
         - cn-shenzhen
         - ap-southeast-1
         - us-west-1
+    serviceName:
+      title: 服务名
+      type: string
+      default: video-process-flow-${default-suffix}
+      pattern: "^[a-zA-Z_][a-zA-Z0-9-_]{0,127}$"
+      description: 应用所属的函数计算服务
     serviceRoleArn:
       title: 函数计算Service RAM角色ARN
       type: string
