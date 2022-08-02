@@ -17,6 +17,9 @@ async function postInit(inputObj) {
      This application can help you quickly deploy the ffmpeg-app project.
      The application uses FC component：https://github.com/devsapp/fc
      The application homepage: https://github.com/devsapp/start-ffmpeg\n`)
+
+     const { artTemplate } = inputObj;
+     artTemplate("code/flows/video-processing-fc.yml");
 }
 
 module.exports = {
