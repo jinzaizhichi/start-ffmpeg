@@ -1,6 +1,6 @@
 Type: Application
 Name: video-process-flow
-Version: dev
+Version: 0.1.2
 Provider:
   - 阿里云
 Description: 基于 FC + Serverless Workflow + OSS + NAS + FFmpeg 实现的弹性高可用、并行处理的视频转码服务
@@ -65,7 +65,7 @@ Parameters:
       type: string
       default: ''
       pattern: '^acs:ram::[0-9]*:role/.*$'
-      description: 应用所属的函数计算服务配置的 role, 请提前创建好对应的 role, 授信函数计算服务, 并配置好 AliyunOSSFullAccess 和 AliyunFCDefaultRolePolicy policy。
+      description: 应用所属的函数计算服务配置的 role, 请提前创建好对应的 role, 授信函数计算服务, 并配置好 AliyunOSSFullAccess、AliyunFnFFullAccess 和 AliyunFCDefaultRolePolicy policy。
       required: true
       x-role:
         name: fcffmpegrole
@@ -111,7 +111,7 @@ Parameters:
     segInterval:
       title: 对视频进行分片处理的分片时间
       type: string
-      default: 30
+      default: '30'
       description: 对视频进行分片处理的分片时间，单位为秒
 
     dstFormats:
