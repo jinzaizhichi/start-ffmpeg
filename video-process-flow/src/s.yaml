@@ -23,7 +23,7 @@ access: "{{ access }}"
 vars:
   region: "{{ region }}"
   service:
-    name: video-process-flow
+    name: "{{ serviceName }}"
     description: use fc+fnf+ffmpeg to transcode video in FC
     internetAccess: true
     role: "{{ serviceRoleArn }}"
