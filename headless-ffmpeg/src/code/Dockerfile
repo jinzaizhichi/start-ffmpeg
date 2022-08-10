@@ -1,4 +1,5 @@
-FROM aliyunfc/headless-ffmpeg:base
+# https://hub.docker.com/r/aliyunfc/headless-ffmpeg
+FROM aliyunfc/headless-ffmpeg
 
 WORKDIR /code
 
