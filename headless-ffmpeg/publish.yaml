@@ -2,7 +2,7 @@ Type: Application
 Name: headless-ffmpeg
 Provider:
   - 阿里云
-Version: 0.1.12
+Version: 0.1.13
 Description: 快速部署一个全景录制的应用到阿里云函数计算
 HomePage: https://github.com/devsapp/start-ffmpeg/tree/master/headless-ffmpeg
 Tags:
@@ -91,14 +91,14 @@ Parameters:
           - region
     ossAkID:
       title: OSS AK ID
-      type: string
+      type: secret
       default: ''
       description: 能操作上面 OSS 存储桶的 ak id
     ossAkSecret:
       title: OSS AK Secret
-      type: string
+      type: secret
       default: ''
-      description: 能操作上面 OSS 存储桶的 ak id
+      description: 能操作上面 OSS 存储桶的 ak secret
     timeZone:
       title: 时区
       type: string
