@@ -15,13 +15,13 @@ function myExecSync(cmd, t) {
   var start = new Date().getTime(); // 开始时间
   // console.log(JSON.stringify(env, null, 2))
   try{
-    var output = execSync(cmd, {
+    execSync(cmd, {
       cwd: process.cwd(),
       env: env,
       shell: "/bin/bash",
-      timeout: t
+      timeout: t,
+      stdio: 'inherit'
     });
-    console.log(output.toString());
   } catch (e) {
     var end = new Date().getTime(); // 结束时间
     var totalTime = end - start;
@@ -38,15 +38,6 @@ function myExecSync(cmd, t) {
 const express = require('express');
 const app = express();
 app.use(express.raw());
-
-// app.post('/initialize', (req, res) => {
-//   // console.log(JSON.stringify(req.headers));
-//   var rid = req.headers[REQUEST_ID_HEADER]
-//   console.log(`FC Initialize Start RequestId: ${rid}`)
-//   // do your things
-//   res.send('Hello FunctionCompute, initialize \n');
-//   console.log(`FC Initialize End RequestId: ${rid}`)
-// });
 
 // invocation
 app.post('/invoke', (req, res) => {
@@ -74,7 +65,6 @@ app.post('/invoke', (req, res) => {
     store.put(outputFile, '/var/output/test.mp4').then((result) => {
       console.log("finish to upload video to oss");
       myExecSync("rm -rf /var/output/test.mp4", 5000);
-      // myExecSync("ps aux", 5000);
       res.send('OK');
       console.log(`FC Invoke End RequestId: ${rid}`)
     }).catch(function (e) {

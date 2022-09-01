@@ -54,6 +54,8 @@ $ s invoke -e '{"record_time":"35","video_url":"http://devsapp.functioncompute.c
 
 调用成功后， 会在对应的 bucket 下， 产生 record/test.mp4 这个 35 秒的全景录制视频。
 
+> 该示例默认的 window size 为 1080x720, 如果您有别的需求， 将 record.sh 和 record.js 对应的值修改成您需要的即可
+
 # 原理
 
 Chrome 渲染到虚拟 X-server，并通过 FFmpeg 抓取系统桌⾯，通过启动 xvfb 启动虚拟 X-server，Chrome 进⾏全屏显示渲染到到虚拟 X-server 上，并通过 FFmpeg 抓取系统屏幕以及采集系统声⾳并进⾏编码写⽂件。这种⽅式的适配性⾮常好， 不仅可以录制 Chrome，理论上也可以录制其他的应⽤。缺点是占⽤的内存和 CPU 较多。

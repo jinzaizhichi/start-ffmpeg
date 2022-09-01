@@ -13,9 +13,11 @@ async function test(){
         '--autoplay-policy=no-user-gesture-required',
         '--enable-usermedia-screen-capturing',
         '--allow-http-screen-capture',
-        "--disable-gpu"
+        "--disable-gpu",
+        '--start-fullscreen',
+        '--window-size=1080,720',
       ],
-      ignoreDefaultArgs: ['--mute-audio']
+      ignoreDefaultArgs: ['--mute-audio', '--enable-automation']
     });
   console.log("try new page .....");
   const page = await browser.newPage();
@@ -32,5 +34,3 @@ async function test(){
 }
 
 test();
-
-console.log("************");

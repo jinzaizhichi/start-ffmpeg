@@ -2,7 +2,7 @@
 set -e
 
 record_time=$1
-buff=5
+buff=10
 (( node_time_out=record_time+buff ))
 
 # start pulseaudio service
@@ -28,6 +28,20 @@ do
   fi
 done
 
+echo "wait until chrome success ...."
+# wait until xvfb success
+for i in {1..10}
+do
+  count=`ps -ef | grep chrome |  grep -v "grep" | wc -l`
+  if [ $count -gt 0 ]; then
+    sleep 1
+    echo  "chrome is ready!"
+    break
+  else
+    sleep 1
+  fi
+done
+
 ## ffmpeg 必须先于 xvfb 退出
 echo  "ffmpeg start recording ..."
 nohup ffmpeg -y -f x11grab  -video_size 1080x720 -i :76 -f alsa -ac 2 -i default  /var/output/test.mp4  > /tmp/ffmpeg.log 2>&1 &
@@ -37,9 +51,9 @@ echo  "record finished!!!"
 
 # # 清理本次 shell 脚本启动的所有进程(包含 background)
 ps -efww|grep -w 'ffmpeg'| grep -v grep | cut -c 9-15 | xargs kill -15
-sleep 10
-ps -efww|grep -w 'chrome'| grep -v grep | cut -c 9-15 | xargs kill -15
+sleep 5
 ps -efww|grep -w 'record.js'| grep -v grep | cut -c 9-15 | xargs kill -15
+ps -efww|grep -w 'chrome'| grep -v grep | cut -c 9-15 | xargs kill -15
 sleep 1
 ps -efww|grep -w 'Xvfb'| grep -v grep | cut -c 9-15 | xargs kill -15
 sleep 1
