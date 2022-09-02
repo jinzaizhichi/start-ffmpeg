@@ -40,20 +40,18 @@ wait_shutdown(){
   done
 }
 
-# start xvfb screen
-record_time=$1
-buff=30
-(( node_time_out=record_time+buff ))
-echo  "start xvfb-run ..."
-xvfb-run --listen-tcp --server-num=76 --server-arg="-screen 0 $3" --auth-file=$XAUTHORITY  nohup node record.js $node_time_out $2 $4 > /tmp/chrome.log 2>&1 &
-sleep 1s
-
 # start pulseaudio service
 pulseaudio -D --exit-idle-time=-1
 pacmd load-module module-virtual-sink sink_name=v1
 pacmd set-default-sink v1
 pacmd set-default-source v1.monitor
-sleep 1s
+
+# start xvfb screen
+record_time=$1
+buff=30
+(( node_time_out=record_time+buff ))
+echo  "start xvfb-run ..."
+xvfb-run --listen-tcp --server-num=76 --server-arg="-screen 0 $3" --auth-file=$XAUTHORITY  nohup node record.js $node_time_out $2 $4 $6 > /tmp/chrome.log 2>&1 &
 
 wait_ready pulseaudio
 wait_ready xvfb-run
@@ -62,31 +60,33 @@ wait_ready chrome
 # wait_ready record.js
 
 echo  "ffmpeg start recording ..."
-nohup ffmpeg -y -f x11grab  -video_size $5 -r 30 -i :76 -f alsa -ac 2 -ar 44100 -i default -use_wallclock_as_timestamps 1 -fflags +genpts  -correct_ts_overflow 0 /var/output/test.mp4  > /tmp/ffmpeg.log 2>&1 &
+nohup ffmpeg -y -loglevel debug -thread_queue_size 32 -f x11grab  -video_size $5 -r 30 -probesize 96M -i :76 -f alsa -ac 2 -ar 44100 -i default -fflags +genpts /var/output/test.mp4  > /tmp/ffmpeg.log 2>&1 &
 
 sleep $record_time
-
-cat /tmp/ffmpeg.log
 
 echo  "clean process ..."
 # ffmpeg 必须先于 xvfb 退出
 kill_pid ffmpeg 2
 wait_shutdown ffmpeg
 
+cat /tmp/ffmpeg.log
+
 ls -lh /var/output
 
 sleep 3s
 
-kill_pid xvfb-run 15
-wait_shutdown xvfb-run
 kill_pid Xvfb 15
 wait_shutdown Xvfb
 kill_pid chrome 15
 wait_shutdown chrome
 kill_pid record.js 15
 wait_shutdown record.js
+kill_pid xvfb-run 15
+wait_shutdown xvfb-run
+kill_pid pulseaudio 15
+wait_shutdown pulseaudio
 
-sleep 5s
+sleep 3s
 
 ps auxww
 

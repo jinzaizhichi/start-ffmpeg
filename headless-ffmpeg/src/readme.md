@@ -49,10 +49,56 @@
 # 调用函数
 
 ``` bash
-$ s invoke -e '{"record_time":"70","video_url":"https://tv.cctv.com/live/cctv1/","output_file":"record2/test9.mp4", "width":"1920", "height":"1080"}'
+# deploy
+$ s deploy -y --use-local
+# Invoke
+$ s invoke -e '{"record_time":"60","video_url":"https://tv.cctv.com/live/cctv1/","output_file":"record2/test.mp4", "width":"1920", "height":"1080", "scale": 0.5}'
 ```
 
-调用成功后， 会在对应的 bucket 下， 产生 record/test.mp4 大约 70 秒 1920x1080 的全景录制视频。
+调用成功后， 会在对应的 bucket 下， 产生 record/test.mp4 大约 60 秒 1920x1080 的全景录制视频。
+
+其中参数的意义：
+
+**1.record_time:** 录制时长
+
+**2.video_url:** 录制视频的 url
+
+**3.width:** 录制视频的宽度
+
+**4.height:** 录制视频的高度
+
+**5.scale:** 浏览器缩放比例
+
+**6.output_file:** 最后录制视频保存的 OSS 目录
+
+其中 scale 是对浏览器进行 50% 的缩放，使视频能录制更多的网页内容， 比如上面的示例参数得到下图:
+
+![](https://img.alicdn.com/imgextra/i3/O1CN01ErrdyI1b5ewm1A1Il_!!6000000003414-2-tps-2878-1638.png)
+
+# 如何本地调试
+
+直接本地运行， 命令执行完毕后， 会在当前目录生成一个 test.mp4 的视频
+
+```
+$ docker run --rm --entrypoint="" -v $(pwd):/var/output aliyunfc/browser_recorder  /code/record.sh 60 https://tv.cctv.com/live/cctv1 1920x1920x24 1920,19200 1920x1920 1
+```
+
+调试
+
+```bash
+# 如果有镜像有代码更新, 重新build 镜像
+$ docker build -t my-headless-ffmpeg -f ./code/Dockerfile ./code
+# 测试全屏录制核心脚本 record.sh, 执行完毕后， 会在当前目录有一个 test.mp4 的视频
+$ docker run --rm --entrypoint="" -v $(pwd):/var/output my-headless-ffmpeg  /code/record.sh 60 https://tv.cctv.com/live/cctv1 1920x1920x24 1920,19200 1920x1920 1
+```
+
+> 其中 record.sh 的参数意义:
+> 1. 录制时长
+> 2. 视频 url
+> 3. $widthx$heightx24
+> 4. $width,$height
+> 5. $widthx$height
+> 6. chrome 浏览器缩放比例
 
 # 原理
 

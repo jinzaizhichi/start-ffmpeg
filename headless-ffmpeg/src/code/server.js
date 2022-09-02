@@ -26,7 +26,8 @@ app.post('/invoke', (req, res) => {
     var outputFile = evt["output_file"];
     var width = evt["width"];
     var height = evt["height"];
-    var cmdStr = `/code/record.sh ${recordTime} ${videoUrl} ${width}x${height}x24 ${width},${height} ${width}x${height}`;
+    var scale_factor = evt["scale"] || 1;
+    var cmdStr = `/code/record.sh ${recordTime} ${videoUrl} ${width}x${height}x24 ${width},${height} ${width}x${height} ${scale_factor}`;
     console.log(`cmd is ${cmdStr} \n`);
     execSync(cmdStr, {stdio: 'inherit', shell: "/bin/bash"});
     console.log("start upload video to oss ...");
@@ -42,12 +43,10 @@ app.post('/invoke', (req, res) => {
       res.send('OK');
       console.log(`FC Invoke End RequestId: ${rid}`)
     }).catch(function (e) {
-      console.log("fail to upload video to oss: " + e.toString())
       res.status(404).send(e.stack || e);
       console.log(`FC Invoke End RequestId: ${rid}, Error: Unhandled function error`);
     });
   } catch (e) {
-    console.error(e.stack || e);
     res.status(404).send(e.stack || e);
     console.log(`FC Invoke End RequestId: ${rid}, Error: Unhandled function error`)
   }
