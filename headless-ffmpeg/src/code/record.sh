@@ -1,70 +1,93 @@
 #!/bin/bash
 set -e
+#set -v
 
-record_time=$1
-buff=10
-(( node_time_out=record_time+buff ))
+wait_ready(){
+  echo "wait until $1 success ..."
+  for i in {1..30}
+  do
+    count=`ps -ef | grep $1 |  grep -v "grep" | wc -l`
+    if [ $count -gt 0 ]; then
+      echo  "$1 is ready!"     
+      break
+    else
+      sleep 1
+    fi
+  done
+}
 
-# start pulseaudio service
-# pulseaudio -D --exit-idle-time=-1
-# pacmd load-module module-virtual-sink sink_name=v1
-# pacmd set-default-sink v1
-# pacmd set-default-source v1.monitor
+kill_pid () {
+    local pids=`ps aux | grep $1 | grep -v grep | awk '{print $2}'`
+    if [ "$pids" != "" ]; then
+        echo "Killing the following $1 processes: $pids"
+        kill -n $2 $pids
+    else
+        echo "No $1 processes to kill"
+    fi
+}
+
+wait_shutdown(){
+  echo "wait until $1 shutdown ..."
+  for i in {1..30}
+  do
+    count=`ps -ef | grep $1 |  grep -v "grep" | wc -l`
+    if [ $count -eq 0 ]; then
+      echo  "$1 is shutdown!"     
+      break
+    else
+      sleep 1
+    fi
+  done
+}
 
 # start xvfb screen
-xvfb-run --listen-tcp --server-num=76 --server-arg="-screen 0 1080x720x24" --auth-file=$XAUTHORITY  nohup node record.js $node_time_out >/tmp/chrome.log $2 2>&1 &
+record_time=$1
+buff=30
+(( node_time_out=record_time+buff ))
+echo  "start xvfb-run ..."
+xvfb-run --listen-tcp --server-num=76 --server-arg="-screen 0 $3" --auth-file=$XAUTHORITY  nohup node record.js $node_time_out $2 $4 > /tmp/chrome.log 2>&1 &
+sleep 1s
 
-echo "wait until xvfb success ...."
-# wait until xvfb success
-for i in {1..5}
-do
-  count=`ps -ef | grep xvfb |  grep -v "grep" | wc -l`
-  if [ $count -gt 0 ]; then
-    sleep 2
-    echo  "xvfb is ready!"
-    break
-  else
-    sleep 1
-  fi
-done
+# start pulseaudio service
+pulseaudio -D --exit-idle-time=-1
+pacmd load-module module-virtual-sink sink_name=v1
+pacmd set-default-sink v1
+pacmd set-default-source v1.monitor
+sleep 1s
 
-echo "wait until chrome success ...."
-# wait until xvfb success
-for i in {1..10}
-do
-  count=`ps -ef | grep chrome |  grep -v "grep" | wc -l`
-  if [ $count -gt 0 ]; then
-    sleep 1
-    echo  "chrome is ready!"
-    break
-  else
-    sleep 1
-  fi
-done
+wait_ready pulseaudio
+wait_ready xvfb-run
+# wait_ready Xvfb
+wait_ready chrome
+# wait_ready record.js
 
-## ffmpeg 必须先于 xvfb 退出
 echo  "ffmpeg start recording ..."
-nohup ffmpeg -y -f x11grab  -video_size 1080x720 -i :76 -f alsa -ac 2 -i default  /var/output/test.mp4  > /tmp/ffmpeg.log 2>&1 &
+nohup ffmpeg -y -f x11grab  -video_size $5 -r 30 -i :76 -f alsa -ac 2 -ar 44100 -i default -use_wallclock_as_timestamps 1 -fflags +genpts  -correct_ts_overflow 0 /var/output/test.mp4  > /tmp/ffmpeg.log 2>&1 &
 
 sleep $record_time
-echo  "record finished!!!"
 
-# # 清理本次 shell 脚本启动的所有进程(包含 background)
-ps -efww|grep -w 'ffmpeg'| grep -v grep | cut -c 9-15 | xargs kill -15
-sleep 5
-ps -efww|grep -w 'record.js'| grep -v grep | cut -c 9-15 | xargs kill -15
-ps -efww|grep -w 'chrome'| grep -v grep | cut -c 9-15 | xargs kill -15
-sleep 1
-ps -efww|grep -w 'Xvfb'| grep -v grep | cut -c 9-15 | xargs kill -15
-sleep 1
-ps -efww|grep -w 'xvfb-run'| grep -v grep | cut -c 9-15 | xargs kill -15
+cat /tmp/ffmpeg.log
 
-# sleep 1
-# trap "exit" INT TERM
-# trap "kill 0" EXIT
+echo  "clean process ..."
+# ffmpeg 必须先于 xvfb 退出
+kill_pid ffmpeg 2
+wait_shutdown ffmpeg
 
-sleep 3
+ls -lh /var/output
 
-# ps -efww|grep -w 'defunct'| grep -v grep | cut -c 9-15 | xargs kill -9
+sleep 3s
 
-echo  "record worker exited!!!"
+kill_pid xvfb-run 15
+wait_shutdown xvfb-run
+kill_pid Xvfb 15
+wait_shutdown Xvfb
+kill_pid chrome 15
+wait_shutdown chrome
+kill_pid record.js 15
+wait_shutdown record.js
+
+sleep 5s
+
+ps auxww
+
+echo  "record worker finished!!!"
