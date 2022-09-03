@@ -27,7 +27,7 @@ app.post('/invoke', (req, res) => {
     var width = evt["width"];
     var height = evt["height"];
     var scale_factor = evt["scale"] || 1;
-    var cmdStr = `/code/record.sh ${recordTime} ${videoUrl} ${width}x${height}x24 ${width},${height} ${width}x${height} ${scale_factor}`;
+    var cmdStr = `/code/record.sh ${recordTime} '${videoUrl}' ${width}x${height}x24 ${width},${height} ${width}x${height} ${scale_factor}`;
     console.log(`cmd is ${cmdStr} \n`);
     execSync(cmdStr, {stdio: 'inherit', shell: "/bin/bash"});
     console.log("start upload video to oss ...");
