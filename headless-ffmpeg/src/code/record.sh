@@ -55,12 +55,16 @@ xvfb-run --listen-tcp --server-num=76 --server-arg="-screen 0 $3" --auth-file=$X
 
 wait_ready pulseaudio
 wait_ready xvfb-run
-# wait_ready Xvfb
+wait_ready Xvfb
 wait_ready chrome
-# wait_ready record.js
+wait_ready record.js
+
+sleep 5s
 
 echo  "ffmpeg start recording ..."
 nohup ffmpeg -y -loglevel debug -thread_queue_size 32 -f x11grab  -video_size $5 -r 30 -probesize 96M -i :76 -f alsa -ac 2 -ar 44100 -i default -fflags +genpts /var/output/test.mp4  > /tmp/ffmpeg.log 2>&1 &
+
+wait_ready ffmpeg
 
 sleep $record_time
 
