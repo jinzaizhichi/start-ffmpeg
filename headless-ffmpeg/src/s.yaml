@@ -43,7 +43,6 @@ services:
       function:
         name: ${vars.functionName}
         runtime: custom-container
-        codeUri: ./code
         memorySize: 8192
         instanceType: c1
         timeout: 7200
