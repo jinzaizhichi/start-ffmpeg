@@ -47,7 +47,7 @@ services:
         instanceType: c1
         timeout: 7200
         customContainerConfig:
-          image: "{{ acrImage }}"
+          image: "{{ acrRegistry }}"
         environmentVariables:
           OSS_AK_ID: "{{ ossAkID }}"
           OSS_AK_SECRET: "{{ ossAkSecret }}"  
