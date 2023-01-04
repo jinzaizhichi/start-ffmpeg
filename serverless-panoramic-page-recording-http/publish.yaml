@@ -2,7 +2,7 @@ Type: Application
 Name: HttpPanoramicPageRecording
 Provider:
   - 阿里云
-Version: 0.0.21
+Version: 0.0.22
 Description: 快速部署一个Http触发的全景web页面录制-高级版应用到阿里云函数计算
   相对于"全景录制"，本应用的新增feature主要有：
   1.页面不显示鼠标，提升观看体验
@@ -10,7 +10,7 @@ Description: 快速部署一个Http触发的全景web页面录制-高级版应�
   3.支持传入帧率，支持推流
   4.优化了前期启动时间及后期结束时间
   5.修改了触发方式，该版本为http触发
-HomePage: https://github.com/devsapp/start-ffmpeg/tree/master/headless-ffmpeg
+HomePage: https://github.com/devsapp/start-ffmpeg/tree/master/serverless-panoramic-page-recording-http
 Tags:
   - 全景录制
 Category: 音视频处理

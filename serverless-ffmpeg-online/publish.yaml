@@ -2,9 +2,9 @@ Type: Application
 Name: Ffmpeg-online
 Provider:
   - 阿里云
-Version: 0.0.5
+Version: 0.0.7
 Description: 快速部署一个ffmpeg-online应用到阿里云函数计算
-HomePage: https://github.com/devsapp/start-ffmpeg/tree/master/headless-ffmpeg
+HomePage: https://github.com/devsapp/start-ffmpeg/tree/master/serverless-ffmpeg-online
 Tags:
   - 视频在线处理
 Category: 音视频处理
