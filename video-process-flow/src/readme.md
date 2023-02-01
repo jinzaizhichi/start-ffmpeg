@@ -2,13 +2,13 @@
 
 <p align="center" class="flex justify-center">
     <a href="https://www.serverless-devs.com" class="ml-1">
-    <img src="http://editor.devsapp.cn/icon?package=image-compress&type=packageType">
+    <img src="http://editor.devsapp.cn/icon?package=video-process-flow&type=packageType">
   </a>
-  <a href="http://www.devsapp.cn/details.html?name=image-compress" class="ml-1">
-    <img src="http://editor.devsapp.cn/icon?package=image-compress&type=packageVersion">
+  <a href="http://www.devsapp.cn/details.html?name=video-process-flow" class="ml-1">
+    <img src="http://editor.devsapp.cn/icon?package=video-process-flow&type=packageVersion">
   </a>
-  <a href="http://www.devsapp.cn/details.html?name=image-compress" class="ml-1">
-    <img src="http://editor.devsapp.cn/icon?package=image-compress&type=packageDownload">
+  <a href="http://www.devsapp.cn/details.html?name=video-process-flow" class="ml-1">
+    <img src="http://editor.devsapp.cn/icon?package=video-process-flow&type=packageDownload">
   </a>
 </p>
 
@@ -46,8 +46,8 @@
 
 <appcenter>
 
-- :fire: 通过 [Serverless 应用中心](https://fcnext.console.aliyun.com/applications/create?template=image-compress) ，
-[![Deploy with Severless Devs](https://img.alicdn.com/imgextra/i1/O1CN01w5RFbX1v45s8TIXPz_!!6000000006118-55-tps-95-28.svg)](https://fcnext.console.aliyun.com/applications/create?template=image-compress)  该应用。 
+- :fire: 通过 [Serverless 应用中心](https://fcnext.console.aliyun.com/applications/create?template=video-process-flow) ，
+[![Deploy with Severless Devs](https://img.alicdn.com/imgextra/i1/O1CN01w5RFbX1v45s8TIXPz_!!6000000006118-55-tps-95-28.svg)](https://fcnext.console.aliyun.com/applications/create?template=video-process-flow)  该应用。 
 
 </appcenter>
 
