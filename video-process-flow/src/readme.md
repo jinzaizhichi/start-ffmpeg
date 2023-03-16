@@ -1,7 +1,7 @@
+
 > 注：当前项目为 Serverless Devs 应用，由于应用中会存在需要初始化才可运行的变量（例如应用部署地区、服务名、函数名等等），所以**不推荐**直接 Clone 本仓库到本地进行部署或直接复制 s.yaml 使用，**强烈推荐**通过 `s init ` 的方法或应用中心进行初始化，详情可参考[部署 & 体验](#部署--体验) 。
 
 # video-process-flow 帮助文档
-
 <p align="center" class="flex justify-center">
     <a href="https://www.serverless-devs.com" class="ml-1">
     <img src="http://editor.devsapp.cn/icon?package=video-process-flow&type=packageType">
@@ -27,7 +27,10 @@
 </codeUrl>
 <preview>
 
+
+
 </preview>
+
 
 ## 前期准备
 
@@ -35,33 +38,43 @@
 
 <service>
 
-| 服务              | 备注                                   |
-| ----------------- | -------------------------------------- |
-| 函数计算 FC       | 转码等函数部署在函数计算               |
-| Serverless 工作流 | 视频处理工作流部署在 Serverless 工作流 |
-| 文件存储 NAS      | 视频临时处理工作区间位于文件存储 NAS   |
-| 专有网络 VPC      | NAS 挂载点需要有 VPC                   |
+
+
+| 服务 |  备注  |
+| --- |  --- |
+| 函数计算 FC |  转码等函数部署在函数计算 |
+| Serverless 工作流 |  视频处理工作流部署在 Serverless 工作流 |
+| 对象存储 OSS |  原视频位于 OSS |
+| 文件存储 NAS |  视频临时处理工作区间位于文件存储 NAS |
+| 专有网络 VPC |  NAS 挂载点需要有 VPC |
 
 </service>
 
 推荐您拥有以下的产品权限 / 策略：
 <auth>
 
-| 服务/业务 | 权限                | 备注                                                             |
-| --------- | ------------------- | ---------------------------------------------------------------- |
-| 函数计算  | AliyunFCFullAccess  | 创建或者更新转码等函数                                           |
-| 硬盘挂载  | AliyunNASFullAccess | 视频临时处理工作区间位于文件存储 NAS， 需要有自动创建 NAS 的权限 |
-| VPC       | AliyunVPCFullAccess | NAS 需要 VPC 挂载点， 需要有 VPC 自动创建的能力                  |
-| 工作流    | AliyunFnFFullAccess | 创建或者更新音视频处理工作流                                     |
-| 其它      | AliyunECSFullAccess | 函数计算 NAS 挂载点需要交换机和安全组， 需要有自动创建的权限     |
+
+
+| 服务/业务 |  权限 |  备注  |
+| --- |  --- |   --- |
+| 函数计算 | AliyunFCFullAccess |  创建或者更新转码等函数 |
+| 硬盘挂载 | AliyunNASFullAccess |  视频临时处理工作区间位于文件存储 NAS， 需要有自动创建 NAS 的权限 |
+| VPC | AliyunVPCFullAccess |  NAS 需要 VPC 挂载点， 需要有 VPC 自动创建的能力 |
+| OSS | AliyunOSSFullAccess |  创建 OSS 触发器需要的调用 OSS 相关 API 的权限 |
+| 工作流 | AliyunFnFFullAccess |  创建或者更新音视频处理工作流 |
+| 其它 | AliyunECSFullAccess |  函数计算 NAS 挂载点需要交换机和安全组， 需要有自动创建的权限 |
 
 </auth>
 
 <remark>
 
+
+
 </remark>
 
 <disclaimers>
+
+
 
 </disclaimers>
 
@@ -112,17 +125,18 @@
 
 </usedetail>
 
+
 <devgroup>
+
 
 ## 开发者社区
 
 您如果有关于错误的反馈或者未来的期待，您可以在 [Serverless Devs repo Issues](https://github.com/serverless-devs/serverless-devs/issues) 中进行反馈和交流。如果您想要加入我们的讨论组或者了解 FC 组件的最新动态，您可以通过以下渠道进行：
 
-<p align="center">
+<p align="center">  
 
 | <img src="https://serverless-article-picture.oss-cn-hangzhou.aliyuncs.com/1635407298906_20211028074819117230.png" width="130px" > | <img src="https://serverless-article-picture.oss-cn-hangzhou.aliyuncs.com/1635407044136_20211028074404326599.png" width="130px" > | <img src="https://serverless-article-picture.oss-cn-hangzhou.aliyuncs.com/1635407252200_20211028074732517533.png" width="130px" > |
 | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | <center>微信公众号：`serverless`</center>                                                                                         | <center>微信小助手：`xiaojiangwh`</center>                                                                                        | <center>钉钉交流群：`33947367`</center>                                                                                           |
-
 </p>
 </devgroup>
